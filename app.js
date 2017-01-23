@@ -3,7 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-// var csrf = require('csurf');
+var csrf = require('csurf');
 var bodyParser = require('body-parser');
 
 const fs = require('fs');
@@ -22,14 +22,25 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cookieParser());
 // csrf
-// app.use(csrf({ cookie: true }));
+app.use(csrf({ cookie: true }));
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use(function (req, res, next) {
+    res.locals.csrftoken = req.csrfToken();
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+
+    // res.cookie
+    //res.render('send', { csrfToken: req.csrfToken() });
+
+    next();
+});
 
 app.use('/', index);
 app.use('/index', index);
@@ -37,21 +48,6 @@ app.use('/users', users);
 app.use('/contactus', contactUs);
 app.use('/thankyou', thankYou);
 
-// app.use(function (req, res, next) {
-//   // res.locals.csrftoken = req.csrftoken();
-//     console.log('what is: ' + req.csrfToken);
-//     res.render('send', { csrfToken: req.csrfToken() });
-//
-//     next();
-// });
-
-// app.post('/', function (req, res, next) {
-//
-//     console.log('what is: ' + req.csrfToken);
-//     res.render('send', { csrfToken: req.csrfToken() });
-//
-//     next();
-// });
 
 app.post('/contactus', function (req, res) {
 
@@ -79,10 +75,8 @@ app.post('/contactus', function (req, res) {
         if (err) {
             throw err;
         }
-
         res.redirect('/thankYou?username=' + name);
     });
-
 });
 
 // catch 404 and forward to error handler
@@ -104,4 +98,6 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app.listen('2222');
+
+
 

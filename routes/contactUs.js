@@ -14,17 +14,17 @@ router.get('/', function(req, res, next) {
 
     console.log("error msg is:" + errorMsg);
     if (errorMsg != null && errorMsg.length > 0 ) {
+        // res.render('contactUs', {title: 'Contact us ', 'error': errorMsg, csrftoken: req.csrfToken()});
         res.render('contactUs', {title: 'Contact us ', 'error': errorMsg});
         res.query = null;
     } else {
         res.render('contactUs', {title: 'Contact us ', 'error': ''});
     }
 
-    res.render('contacUs', { csrfToken: req.csrfToken() });
+    // res.render('contacUs', { csrfToken: req.csrfToken() });
 });
 
 
 module.exports = router;
-
 
 
