@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <!--<p>Welcome to <%= title %></p>-->
+
+    <%if (error != null && error.length > 0) { %>
+        <p> Error: <%= error%></p>
+    <% } %>
+
+    <form action="" method="post">
+      Full name: <input type="text" name="full_name" ><br>
+      Type:
+          <select name="type">
+            <option value="suggestion">Suggestion</option>
+            <option value="complaint">Complaint</option>
+          </select>
+      <br>
+      <textarea rows="4" cols="50" name="message"></textarea>
+      <br>
+      <input type="submit" value="Submit">
+      <input type="hidden" name="_csrf" value="#{csrftoken}">
+
+    </form>
+
+  </body>
+</html>
+
+
+
